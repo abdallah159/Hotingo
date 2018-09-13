@@ -15,9 +15,6 @@ import butterknife.ButterKnife;
 import solutions.hamza.hotelorders.R;
 import solutions.hamza.hotelorders.adapter.ServicesAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class HotelServicesFragment extends Fragment {
 
 

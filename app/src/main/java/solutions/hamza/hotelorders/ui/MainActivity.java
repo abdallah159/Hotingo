@@ -19,12 +19,14 @@ import solutions.hamza.hotelorders.R;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    Toolbar toolbar ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -68,23 +70,27 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_service) {
+            toolbar.setTitle("Services");
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.cointaner, HotelServicesFragment.newInstance())
                     .commit();
         } else if (id == R.id.nav_rooms) {
+            toolbar.setTitle("Rooms");
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.cointaner, RoomsFragment.newInstance())
                     .commit();
 
         } else if (id == R.id.nav_myRoom) {
+            toolbar.setTitle("My Room");
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.cointaner, MyRoomFragment.newInstance())
                     .commit();
 
         } else if (id == R.id.nav_about) {
+            toolbar.setTitle("About");
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.cointaner, AboutFragment.newInstance())

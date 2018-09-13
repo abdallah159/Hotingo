@@ -50,6 +50,12 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.VH> {
 
     @Override
     public void onBindViewHolder(VH holder, final int position) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onServiceClickListner.onServiceClickListner();
+            }
+        });
 
     }
 

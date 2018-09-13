@@ -3,14 +3,18 @@ package solutions.hamza.hotelorders.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import solutions.hamza.hotelorders.R;
 import solutions.hamza.hotelorders.adapter.RoomImagesAdapter;
 
@@ -21,6 +25,14 @@ public class RoomDetailsFragment extends Fragment {
 
     @BindView(R.id.roomImagesRV)
     RecyclerView roomImagesRV;
+    @BindView(R.id.projectdetailsTitleTV)
+    TextView projectdetailsTitleTV;
+    @BindView(R.id.projectDescriptionTitleTV)
+    TextView projectDescriptionTitleTV;
+    @BindView(R.id.projectdetailsDonateNumTV)
+    TextView projectdetailsDonateNumTV;
+    @BindView(R.id.donateNowBTN)
+    Button donateNowBTN;
 
     private RoomImagesAdapter roomDetailsAdapter;
 
@@ -52,4 +64,15 @@ public class RoomDetailsFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @OnClick(R.id.donateNowBTN)
+    public void onViewClicked() {
+        FragmentManager fm = getFragmentManager();
+        BookRoomFragment bookRoomDialog = new BookRoomFragment();
+        bookRoomDialog.show(fm, "Show fragment");
+    }
 }

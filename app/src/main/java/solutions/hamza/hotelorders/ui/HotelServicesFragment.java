@@ -3,6 +3,7 @@ package solutions.hamza.hotelorders.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,6 +48,10 @@ public class HotelServicesFragment extends Fragment {
 
             @Override
             public void onServiceClickListner() {
+
+                FragmentManager fm = getFragmentManager();
+                OrderServiceFragment orderDialog = new OrderServiceFragment();
+                orderDialog.show(fm, "Show fragment");
 
             }
         });

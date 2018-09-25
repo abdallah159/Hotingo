@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     //    public static ApiEndpointInterface apiServiceInterface;
-    public static final String BASE_URL = "https://donationp.herokuapp.com/";
+    public static final String BASE_URL = "https://hotingoapp.herokuapp.com/";
 
     private static Retrofit retrofit = null;
     private static AuthInterceptor mainAuthInterceptor;

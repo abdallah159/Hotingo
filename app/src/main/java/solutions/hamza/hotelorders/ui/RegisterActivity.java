@@ -1,12 +1,11 @@
 package solutions.hamza.hotelorders.ui;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -16,7 +15,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import solutions.hamza.hotelorders.R;
-import timber.log.Timber;
+import solutions.hamza.hotelorders.model.User;
+import solutions.hamza.hotelorders.model.UserResponce;
+import solutions.hamza.hotelorders.service.ApiClient;
+import solutions.hamza.hotelorders.service.ApiEndpointInterface;
+import solutions.hamza.hotelorders.service.AuthInterceptor;
+import solutions.hamza.hotelorders.utils.MyApplication;
+import solutions.hamza.hotelorders.utils.Utilities;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -30,13 +35,10 @@ public class RegisterActivity extends AppCompatActivity {
     EditText CpasswordET;
     @BindView(R.id.phoneET)
     EditText phoneET;
-    @BindView(R.id.genderRG)
-    RadioGroup genderRG;
     @BindView(R.id.registerB)
     Button registerB;
 
-    String userName, password, cPassword, gender, email, phone;
-    String gender_index;
+    String userName, password, cPassword, email, phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,21 +47,6 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
 
-        genderRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.genderRB1:
-                        gender_index = "male";
-                        break;
-                    case R.id.genderRB2:
-                        gender_index = "female";
-                        break;
-
-                }
-            }
-        });
         get_EnteredData();
     }
 
@@ -67,7 +54,6 @@ public class RegisterActivity extends AppCompatActivity {
         userName = UsernameET.getText().toString().trim();
         password = PasswordET.getText().toString().trim();
         cPassword = CpasswordET.getText().toString().trim();
-        gender = gender_index;
         email = emailET.getText().toString().trim();
         phone = phoneET.getText().toString().trim();
     }
@@ -90,11 +76,35 @@ public class RegisterActivity extends AppCompatActivity {
             CpasswordET.setError(getString(R.string.enter_cpassword));
         } else if (password.equals(cPassword) != true) {
             CpasswordET.setError(getString(R.string.confirm_pass_error));
-        } else if (genderRG.getCheckedRadioButtonId() == -1) {
-            Toast.makeText(RegisterActivity.this, R.string.check_gender, Toast.LENGTH_LONG).show();
         } else {
             //
-            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+            Utilities.showLoadingDialog(RegisterActivity.this, R.color.colorAccent);
+            final User user = new User(userName, email, password, phone);
+
+            ApiEndpointInterface apiService =
+                    ApiClient.getClient(new AuthInterceptor(null)).create(ApiEndpointInterface.class);
+
+            Call<UserResponce> call = apiService.signUp(user);
+
+            call.enqueue(new Callback<UserResponce>() {
+                @Override
+                public void onResponse(Call<UserResponce> call, Response<UserResponce> response) {
+
+                    Utilities.dismissLoadingDialog();
+                    if (response.isSuccessful()) {
+                        MyApplication.getPrefManager(RegisterActivity.this).storeUser(response.body());
+                        finish();
+                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserResponce> call, Throwable t) {
+                    Utilities.dismissLoadingDialog();
+                    Toast.makeText(RegisterActivity.this, R.string.wrong, Toast.LENGTH_LONG).show();
+                }
+            });
         }
+        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
     }
 }

@@ -17,28 +17,33 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import solutions.hamza.hotelorders.R;
-import solutions.hamza.hotelorders.adapter.RoomsAdapter;
-import solutions.hamza.hotelorders.model.RoomResponce;
+import solutions.hamza.hotelorders.adapter.MyRoomsAdapter;
+import solutions.hamza.hotelorders.model.AllRoomsResponce;
+import solutions.hamza.hotelorders.model.UserResponce;
 import solutions.hamza.hotelorders.service.ApiClient;
 import solutions.hamza.hotelorders.service.ApiEndpointInterface;
 import solutions.hamza.hotelorders.service.AuthInterceptor;
 import solutions.hamza.hotelorders.utils.MyApplication;
 import solutions.hamza.hotelorders.utils.Utilities;
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RoomsFragment extends Fragment {
+public class MyRoomsFragment extends Fragment {
+
+    @BindView(R.id.allRoomsRV)
+    RecyclerView allRoomsRV;
+
+    private MyRoomsAdapter roomsAdapter;
+    ArrayList<AllRoomsResponce> roomResponces;
+
+//    String USER_PREF_ID = MyApplication.getPrefManager(getContext()).getUser().getUser().getUser_id();
+
+    UserResponce user = MyApplication.getPrefManager(getContext()).getUser();
 
 
-    @BindView(R.id.roomsRV)
-    RecyclerView roomsRV;
-
-    private RoomsAdapter roomsAdapter;
-    ArrayList<RoomResponce> roomResponces;
-
-
-    public RoomsFragment() {
+    public MyRoomsFragment() {
         // Required empty public constructor
     }
 
@@ -46,11 +51,12 @@ public class RoomsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_rooms, container, false);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_my_rooms, container, false);
         ButterKnife.bind(this, view);
-        roomsRV.setLayoutManager
+        allRoomsRV.setLayoutManager
                 (new GridLayoutManager(getContext()
-                        , 2));
+                        , 1));
 
 
         Utilities.showLoadingDialog(getContext(), R.color.colorAccent);
@@ -58,35 +64,36 @@ public class RoomsFragment extends Fragment {
         ApiEndpointInterface apiService =
                 ApiClient.getClient(new AuthInterceptor(MyApplication.getPrefManager(getContext()).getUser().getToken())).create(ApiEndpointInterface.class);
 
+        Call<ArrayList<AllRoomsResponce>> call = apiService.getAllRooms(user.getUser().getUser_id());
 
-        Call<ArrayList<RoomResponce>> call = apiService.getRooms();
-
-        call.enqueue(new Callback<ArrayList<RoomResponce>>() {
+        call.enqueue(new Callback<ArrayList<AllRoomsResponce>>() {
             @Override
-            public void onResponse(Call<ArrayList<RoomResponce>> call, Response<ArrayList<RoomResponce>> response) {
+            public void onResponse(Call<ArrayList<AllRoomsResponce>> call, Response<ArrayList<AllRoomsResponce>> response) {
                 Utilities.dismissLoadingDialog();
                 if (response.isSuccessful()) {
+
                     roomResponces = new ArrayList<>();
                     roomResponces = response.body();
+                    Timber.d(response.body().size()+"");
 
-                    roomsAdapter = new RoomsAdapter(roomResponces,
-                            R.layout.room_row_layout, getContext(), new RoomsAdapter.onRoomClickListner() {
+                    roomsAdapter = new MyRoomsAdapter(roomResponces,
+                            R.layout.room_row_layout, getContext(), new MyRoomsAdapter.onMyRoomClickListner() {
 
                         @Override
-                        public void onRoomClickListner(RoomResponce roomResponce) {
+                        public void onMyRoomClickListner(AllRoomsResponce roomResponce) {
                             getActivity().getSupportFragmentManager()
                                     .beginTransaction()
-                                    .replace(R.id.cointaner, RoomDetailsFragment.newInstance(roomResponce))
+                                    .replace(R.id.cointaner, MyRoomFragment.newInstance(roomResponce))
                                     .addToBackStack(null)
                                     .commit();
                         }
                     });
-                    roomsRV.setAdapter(roomsAdapter);
+                    allRoomsRV.setAdapter(roomsAdapter);
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<RoomResponce>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<AllRoomsResponce>> call, Throwable t) {
                 Utilities.dismissLoadingDialog();
             }
         });
@@ -96,8 +103,7 @@ public class RoomsFragment extends Fragment {
 
 
     public static Fragment newInstance() {
-        Fragment fragment = new RoomsFragment();
+        Fragment fragment = new MyRoomsFragment();
         return fragment;
     }
-
 }

@@ -7,6 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import solutions.hamza.hotelorders.R;
 
 
@@ -14,7 +19,7 @@ public class RoomImagesAdapter extends RecyclerView.Adapter<RoomImagesAdapter.VH
 
     private int rowLayout;
     private Context context;
-    //private List<String> images;
+    private List<String> imgs;
 
 //    private On_allCommunity_ClickListener on_allCommunity_clickListener;
 
@@ -24,14 +29,15 @@ public class RoomImagesAdapter extends RecyclerView.Adapter<RoomImagesAdapter.VH
 
         public VH(View v) {
             super(v);
-            roomIV = v.findViewById(R.id.donateImageIV);
+            roomIV = v.findViewById(R.id.roomDetailIV);
         }
     }
 
-    public RoomImagesAdapter(int rowLayout, Context context) {
+    public RoomImagesAdapter(List<String> images, int rowLayout, Context context) {
 
         this.rowLayout = rowLayout;
         this.context = context;
+        this.imgs = images;
 
     }
 
@@ -43,14 +49,15 @@ public class RoomImagesAdapter extends RecyclerView.Adapter<RoomImagesAdapter.VH
 
     @Override
     public void onBindViewHolder(VH holder, final int position) {
-        //Glide.with(context).load(images.get(position)).into(holder.donateDetailsIV);
+
+        Glide.with(context).load(imgs.get(position)).into(holder.roomIV);
 
 
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return imgs.size();
     }
 
 }

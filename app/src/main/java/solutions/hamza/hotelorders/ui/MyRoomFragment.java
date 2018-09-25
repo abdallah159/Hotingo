@@ -3,10 +3,12 @@ package solutions.hamza.hotelorders.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +19,22 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import solutions.hamza.hotelorders.R;
+import solutions.hamza.hotelorders.model.AllRoomsResponce;
+import solutions.hamza.hotelorders.model.BookRoom;
+import solutions.hamza.hotelorders.model.ExtendBook;
+import solutions.hamza.hotelorders.model.ExtendResponse;
+import solutions.hamza.hotelorders.model.RoomResponce;
+import solutions.hamza.hotelorders.model.UserResponce;
+import solutions.hamza.hotelorders.service.ApiClient;
+import solutions.hamza.hotelorders.service.ApiEndpointInterface;
+import solutions.hamza.hotelorders.service.AuthInterceptor;
+import solutions.hamza.hotelorders.utils.MyApplication;
+import solutions.hamza.hotelorders.utils.Utilities;
+import timber.log.Timber;
 
 public class MyRoomFragment extends Fragment {
 
@@ -25,6 +42,7 @@ public class MyRoomFragment extends Fragment {
     @BindView(R.id.roomIV)
     ImageView roomIV;
     Unbinder unbinder;
+
     @BindView(R.id.roomMoreDetailsTV)
     TextView roomMoreDetailsTV;
     @BindView(R.id.roomNumberTV)
@@ -33,10 +51,30 @@ public class MyRoomFragment extends Fragment {
     TextView roomPriceTV;
     @BindView(R.id.bookingDurationTV)
     TextView bookingDurationTV;
+
     @BindView(R.id.cancleBookingBTN)
     Button cancleBookingBTN;
     @BindView(R.id.extendBookingBTN)
     Button extendBookingBTN;
+
+
+//    @BindView(R.id.roomBookBTN)
+//    Button roomBookBTN;
+
+    @BindView(R.id.extendBTN)
+    Button extendBTN;
+
+    @BindView(R.id.extendET)
+    EditText extendET;
+
+    @BindView(R.id.extendCard)
+    CardView extendCard;
+
+    static AllRoomsResponce rooms;
+    UserResponce user = MyApplication.getPrefManager(getContext()).getUser();
+
+
+    ExtendBook bookRoom;
 
     public MyRoomFragment() {
         // Required empty public constructor
@@ -50,15 +88,58 @@ public class MyRoomFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_room, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        Glide.with(getContext()).load(R.drawable.room).into(roomIV);
+        Glide.with(getContext()).load(rooms.getRoom().getImgs().get(0)).into(roomIV);
+        roomPriceTV.setText("Room Price per night: " + rooms.getRoom().getPrice());
+        roomNumberTV.setText("Room Number : " + rooms.getRoom().getNumber());
+        bookingDurationTV.setText("Duration of booking : " + rooms.getDuration());
 
+        extendBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendReq();
+            }
+        });
 
         return view;
     }
 
+    public void sendReq() {
+        Utilities.showLoadingDialog(getContext(), R.color.colorAccent);
 
-    public static Fragment newInstance() {
+//        Timber.d(rooms.getRoom().toString());
+        bookRoom = new ExtendBook(extendET.getText().toString());
+        ApiEndpointInterface apiService =
+                ApiClient.getClient(new AuthInterceptor(MyApplication.getPrefManager(getContext()).getUser().getToken())).create(ApiEndpointInterface.class);
+
+        //Timber.d(user.getUser().getUser_id() + "usss" + rooms.getRoom().getId());
+        Call<ExtendResponse> call = apiService.extendRoom(bookRoom, user.getUser().getUser_id(), rooms.getId());
+        call.enqueue(new Callback<ExtendResponse>() {
+            @Override
+            public void onResponse(Call<ExtendResponse> call, Response<ExtendResponse> response) {
+
+                Utilities.dismissLoadingDialog();
+
+
+                if (response.isSuccessful()) {
+                Toast.makeText(getContext(), "Extend Successfully ... ", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ExtendResponse> call, Throwable t) {
+                Utilities.dismissLoadingDialog();
+                Timber.d(t.getMessage());
+                Toast.makeText(getContext(), "Cannot extend room already accepted  ... ", Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+
+    }
+
+    public static Fragment newInstance(AllRoomsResponce allRoomsResponce) {
         Fragment fragment = new MyRoomFragment();
+        rooms = allRoomsResponce;
         return fragment;
     }
 
@@ -70,9 +151,12 @@ public class MyRoomFragment extends Fragment {
 
     @OnClick(R.id.roomMoreDetailsTV)
     public void onViewClicked() {
+        RoomResponce roomsResponce = new RoomResponce(rooms.getRoom().getImgs(), rooms.getRoom().getCreationDate()
+                , rooms.getRoom().getId(), rooms.getRoom().getNumber(), rooms.getRoom().getPrice(), rooms.getRoom().getDesc(), rooms.getRoom().getV());
+
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.cointaner, RoomDetailsFragment.newInstance())
+                .replace(R.id.cointaner, RoomDetailsFragment.newInstance(roomsResponce))
                 .addToBackStack(null)
                 .commit();
     }
@@ -84,7 +168,7 @@ public class MyRoomFragment extends Fragment {
                 Toast.makeText(getContext(), "Room book Cancled", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.extendBookingBTN:
-                Toast.makeText(getContext(), "Extend booking", Toast.LENGTH_SHORT).show();
+                extendCard.setVisibility(View.VISIBLE);
                 break;
         }
     }

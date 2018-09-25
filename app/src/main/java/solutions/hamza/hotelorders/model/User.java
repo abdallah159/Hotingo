@@ -14,9 +14,7 @@ public class User implements Serializable {
     @SerializedName("_id")
     @Expose
     private String user_id;
-    @SerializedName(("gender"))
-    @Expose
-    private String gender;
+
     @SerializedName("email")
     @Expose
     private String email;
@@ -29,9 +27,7 @@ public class User implements Serializable {
     @SerializedName("phone")
     @Expose
     private String phone;
-    @SerializedName("img")
-    @Expose
-    private String Picture;
+
 
 
     public User() {
@@ -42,14 +38,21 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public User(String name, String email, String password, String phone,String gender) {
+    public User(String name, String email, String password, String phone) {
+
         this.name = name;
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.gender = gender;
     }
 
+    public User(String user_id, String email, String name, String password, String phone) {
+        this.user_id = user_id;
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.phone = phone;
+    }
 
     public String getUser_id() {
         return user_id;
@@ -83,14 +86,6 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -99,13 +94,6 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    public String getPicture() {
-        return Picture;
-    }
-
-    public void setPicture(String picture) {
-        Picture = picture;
-    }
 
     @Override
     public String toString() {
@@ -114,9 +102,7 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
-                ", gender='" + gender + '\'' +
                 ", phone='" + phone + '\'' +
-                ", Picture='" + Picture + '\'' +
                 '}';
     }
 }

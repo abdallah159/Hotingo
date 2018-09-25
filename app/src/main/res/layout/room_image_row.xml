@@ -12,7 +12,7 @@
     app:cardElevation="10dp">
 
     <ImageView
-        android:id="@+id/donateImageIV"
+        android:id="@+id/roomDetailIV"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_margin="4dp"

@@ -13,15 +13,15 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import solutions.hamza.hotelorders.R;
-import solutions.hamza.hotelorders.model.RoomResponce;
+import solutions.hamza.hotelorders.model.AllRoomsResponce;
 
 
-public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.VH> {
+public class MyRoomsAdapter extends RecyclerView.Adapter<MyRoomsAdapter.VH> {
 
     private int rowLayout;
     private Context context;
-    private onRoomClickListner onRoomClickListner;
-    ArrayList<RoomResponce> rooms;
+    private onMyRoomClickListner onMyRoomClickListner;
+    ArrayList<AllRoomsResponce> rooms;
 
 
     public static class VH extends RecyclerView.ViewHolder {
@@ -36,11 +36,11 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.VH> {
         }
     }
 
-    public RoomsAdapter(ArrayList<RoomResponce> roomResponces, int rowLayout, Context context, onRoomClickListner listner) {
+    public MyRoomsAdapter(ArrayList<AllRoomsResponce> roomResponces, int rowLayout, Context context, onMyRoomClickListner listner) {
 
         this.rowLayout = rowLayout;
         this.context = context;
-        this.onRoomClickListner = listner;
+        this.onMyRoomClickListner = listner;
         this.rooms = roomResponces;
 
     }
@@ -54,15 +54,15 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.VH> {
     @Override
     public void onBindViewHolder(VH holder, final int position) {
 
-        if (rooms.get(position).getImgs().size() != 0) {
-            Glide.with(context).load(rooms.get(position).getImgs().get(0)).into(holder.room_IV);
+        if (rooms.get(position).getRoom().getImgs().size() != 0) {
+            Glide.with(context).load(rooms.get(position).getRoom().getImgs().get(0)).into(holder.room_IV);
         }
-        holder.roomNumTV.setText(rooms.get(position).getNumber());
+        holder.roomNumTV.setText(rooms.get(position).getRoom().getNumber());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onRoomClickListner.onRoomClickListner(rooms.get(position));
+                onMyRoomClickListner.onMyRoomClickListner(rooms.get(position));
             }
         });
 
@@ -73,11 +73,10 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.VH> {
         return rooms.size();
     }
 
-    public interface onRoomClickListner {
-        void onRoomClickListner(RoomResponce roomResponce);
+    public interface onMyRoomClickListner {
+        void onMyRoomClickListner(AllRoomsResponce roomResponce);
 
     }
-
 
 }
 

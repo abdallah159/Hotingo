@@ -16,7 +16,7 @@
         <item
             android:id="@+id/nav_myRoom"
             android:icon="@drawable/ic_my_room"
-            android:title="My Room" />
+            android:title="My Rooms" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_about"

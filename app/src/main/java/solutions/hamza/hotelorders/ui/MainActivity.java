@@ -1,25 +1,29 @@
 package solutions.hamza.hotelorders.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
+import android.view.View;
 
 import solutions.hamza.hotelorders.R;
+import solutions.hamza.hotelorders.model.UserResponce;
+import solutions.hamza.hotelorders.utils.MyApplication;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Toolbar toolbar ;
+    Toolbar toolbar;
+    UserResponce userResponce = MyApplication.getPrefManager(this).getUser();
+    MyApplication myApplication = new MyApplication();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,21 +79,25 @@ public class MainActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.cointaner, HotelServicesFragment.newInstance())
                     .commit();
-        } else if (id == R.id.nav_rooms) {
+        }
+        else if (id == R.id.nav_rooms) {
             toolbar.setTitle("Rooms");
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.cointaner, RoomsFragment.newInstance())
                     .commit();
 
-        } else if (id == R.id.nav_myRoom) {
-            toolbar.setTitle("My Room");
+        }
+
+        else if (id == R.id.nav_myRoom) {
+            toolbar.setTitle("My Rooms");
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.cointaner, MyRoomFragment.newInstance())
+                    .replace(R.id.cointaner, MyRoomsFragment.newInstance())
                     .commit();
 
-        } else if (id == R.id.nav_about) {
+        }
+        else if (id == R.id.nav_about) {
             toolbar.setTitle("About");
             getSupportFragmentManager()
                     .beginTransaction()
@@ -97,8 +105,13 @@ public class MainActivity extends AppCompatActivity
                     .commit();
 
         } else if (id == R.id.nav_logout) {
+            myApplication.logout();
 
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            this.finish();
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

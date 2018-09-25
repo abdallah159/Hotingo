@@ -33,7 +33,7 @@
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/colorPrimary"
             android:hint="Phone"
-            android:inputType="textEmailAddress"
+            android:inputType="phone"
             android:textColor="@color/colorAccent" />
 
         <EditText

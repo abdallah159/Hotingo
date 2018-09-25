@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.RoomsFragment">
+    tools:context=".ui.MyRoomsFragment">
+
 
     <android.support.v7.widget.RecyclerView
         android:layout_marginTop="8dp"
-        android:id="@+id/roomsRV"
+        android:id="@+id/allRoomsRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

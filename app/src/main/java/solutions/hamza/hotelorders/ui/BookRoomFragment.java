@@ -3,16 +3,18 @@ package solutions.hamza.hotelorders.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,6 +41,14 @@ public class BookRoomFragment extends DialogFragment {
 
     static String room_id;
     static BookRoom bookRoom;
+    @BindView(R.id.cachIV)
+    ImageView cachIV;
+    @BindView(R.id.masterCardIV)
+    ImageView masterCardIV;
+    @BindView(R.id.visaIV)
+    ImageView visaIV;
+    @BindView(R.id.payingLayout)
+    LinearLayout payingLayout;
 
 
     public static BookRoomFragment newInstance(String id) {
@@ -98,4 +108,32 @@ public class BookRoomFragment extends DialogFragment {
     }
 
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @OnClick({R.id.cachIV, R.id.masterCardIV, R.id.visaIV})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.cachIV:
+                cachIV.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                masterCardIV.setBackgroundColor(getContext().getResources().getColor(R.color.normal));
+                visaIV.setBackgroundColor(getContext().getResources().getColor(R.color.normal));
+                payingLayout.setVisibility(View.GONE);
+                break;
+            case R.id.masterCardIV:
+                cachIV.setBackgroundColor(getContext().getResources().getColor(R.color.normal));
+                masterCardIV.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                visaIV.setBackgroundColor(getContext().getResources().getColor(R.color.normal));
+                payingLayout.setVisibility(View.VISIBLE);
+                break;
+            case R.id.visaIV:
+                cachIV.setBackgroundColor(getContext().getResources().getColor(R.color.normal));
+                visaIV.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                masterCardIV.setBackgroundColor(getContext().getResources().getColor(R.color.normal));
+                payingLayout.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
 }

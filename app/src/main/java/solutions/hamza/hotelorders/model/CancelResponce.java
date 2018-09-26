@@ -2,9 +2,7 @@ package solutions.hamza.hotelorders.model;
 
 import java.util.List;
 
-import javax.annotation.Generated;
 
-@Generated("io.t28.json2java.core.JavaConverter")
 @SuppressWarnings("all")
 public class CancelResponce {
     private final String status;

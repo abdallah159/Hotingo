@@ -11,7 +11,7 @@ public class OrderResponce {
 
     private int roomNo;
 
-    private String userServicesOrded;
+    private String user;
 
     private String service;
 
@@ -25,7 +25,7 @@ public class OrderResponce {
         this.id = id;
         this.note = note;
         this.roomNo = roomNo;
-        this.userServicesOrded = userServicesOrded;
+        this.user = userServicesOrded;
         this.service = service;
         this.v = v;
     }
@@ -56,7 +56,7 @@ public class OrderResponce {
     }
 
     public String getUserServicesOrded() {
-        return userServicesOrded;
+        return user;
     }
 
     public String getService() {
@@ -75,7 +75,7 @@ public class OrderResponce {
                 ", id='" + id + '\'' +
                 ", note='" + note + '\'' +
                 ", roomNo=" + roomNo +
-                ", userServicesOrded='" + userServicesOrded + '\'' +
+                ", userServicesOrded='" + user + '\'' +
                 ", service='" + service + '\'' +
                 ", v=" + v +
                 '}';

@@ -82,6 +82,7 @@ public class BookRoomFragment extends DialogFragment {
 
 
     public void sendReq() {
+        Utilities.showLoadingDialog(getContext(),R.color.colorPrimary);
 
         ApiEndpointInterface apiService =
                 ApiClient.getClient(new AuthInterceptor(MyApplication.getPrefManager(getContext()).getUser().getToken())).create(ApiEndpointInterface.class);
@@ -101,7 +102,8 @@ public class BookRoomFragment extends DialogFragment {
             @Override
             public void onFailure(Call<BookingRoomResponce> call, Throwable t) {
                 Utilities.dismissLoadingDialog();
-
+                Toast.makeText(getContext(),t.getMessage().toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"Error Try again please..",Toast.LENGTH_LONG).show();
             }
         });
 

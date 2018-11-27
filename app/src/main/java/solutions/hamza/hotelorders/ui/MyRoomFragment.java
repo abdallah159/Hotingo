@@ -24,7 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import solutions.hamza.hotelorders.R;
 import solutions.hamza.hotelorders.model.AllRoomsResponce;
-import solutions.hamza.hotelorders.model.BookRoom;
+import solutions.hamza.hotelorders.model.CancelResponce;
 import solutions.hamza.hotelorders.model.ExtendBook;
 import solutions.hamza.hotelorders.model.ExtendResponse;
 import solutions.hamza.hotelorders.model.RoomResponce;
@@ -34,10 +34,9 @@ import solutions.hamza.hotelorders.service.ApiEndpointInterface;
 import solutions.hamza.hotelorders.service.AuthInterceptor;
 import solutions.hamza.hotelorders.utils.MyApplication;
 import solutions.hamza.hotelorders.utils.Utilities;
-import timber.log.Timber;
+
 
 public class MyRoomFragment extends Fragment {
-
 
     @BindView(R.id.roomIV)
     ImageView roomIV;
@@ -56,11 +55,6 @@ public class MyRoomFragment extends Fragment {
     Button cancleBookingBTN;
     @BindView(R.id.extendBookingBTN)
     Button extendBookingBTN;
-
-
-//    @BindView(R.id.roomBookBTN)
-//    Button roomBookBTN;
-
     @BindView(R.id.extendBTN)
     Button extendBTN;
 
@@ -106,12 +100,10 @@ public class MyRoomFragment extends Fragment {
     public void sendReq() {
         Utilities.showLoadingDialog(getContext(), R.color.colorAccent);
 
-//        Timber.d(rooms.getRoom().toString());
         bookRoom = new ExtendBook(extendET.getText().toString());
         ApiEndpointInterface apiService =
                 ApiClient.getClient(new AuthInterceptor(MyApplication.getPrefManager(getContext()).getUser().getToken())).create(ApiEndpointInterface.class);
 
-        //Timber.d(user.getUser().getUser_id() + "usss" + rooms.getRoom().getId());
         Call<ExtendResponse> call = apiService.extendRoom(bookRoom, user.getUser().getUser_id(), rooms.getId());
         call.enqueue(new Callback<ExtendResponse>() {
             @Override
@@ -119,16 +111,19 @@ public class MyRoomFragment extends Fragment {
 
                 Utilities.dismissLoadingDialog();
 
-
                 if (response.isSuccessful()) {
                 Toast.makeText(getContext(), "Extend Successfully ... ", Toast.LENGTH_LONG).show();
+                }
+                else {
+
+                    Toast.makeText(getContext(), "Cannot Extend Order Canceled  ... ", Toast.LENGTH_LONG).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<ExtendResponse> call, Throwable t) {
                 Utilities.dismissLoadingDialog();
-                Timber.d(t.getMessage());
                 Toast.makeText(getContext(), "Cannot extend room already accepted  ... ", Toast.LENGTH_LONG).show();
 
 
@@ -136,6 +131,38 @@ public class MyRoomFragment extends Fragment {
         });
 
     }
+
+    public void sendReqCancle() {
+
+        Utilities.showLoadingDialog(getContext(), R.color.colorAccent);
+
+        ApiEndpointInterface apiService =
+                ApiClient.getClient(new AuthInterceptor(MyApplication.getPrefManager(getContext()).getUser().getToken())).create(ApiEndpointInterface.class);
+
+        Call<CancelResponce> call = apiService.cancleRoom( user.getUser().getUser_id(), rooms.getId());
+        call.enqueue(new Callback<CancelResponce>() {
+            @Override
+            public void onResponse(Call<CancelResponce> call, Response<CancelResponce> response) {
+
+                Utilities.dismissLoadingDialog();
+
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Cancle Successfully ... ", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CancelResponce> call, Throwable t) {
+                Utilities.dismissLoadingDialog();
+                Toast.makeText(getContext(), "Cannot cancle  room order  ... ", Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+
+    }
+
+
 
     public static Fragment newInstance(AllRoomsResponce allRoomsResponce) {
         Fragment fragment = new MyRoomFragment();
@@ -165,7 +192,7 @@ public class MyRoomFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cancleBookingBTN:
-                Toast.makeText(getContext(), "Room book Cancled", Toast.LENGTH_SHORT).show();
+                sendReqCancle();
                 break;
             case R.id.extendBookingBTN:
                 extendCard.setVisibility(View.VISIBLE);

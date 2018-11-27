@@ -65,27 +65,33 @@ public class OrderServiceFragment extends DialogFragment {
     }
 
     public void sendReq() {
-        ApiEndpointInterface apiService =
-                ApiClient.getClient(new AuthInterceptor(MyApplication.getPrefManager(getContext()).getUser().getToken())).create(ApiEndpointInterface.class);
 
-        orderResponce = new OrderResponce(orderNotesET.getText().toString(), Integer.valueOf(orderRoomET.getText().toString()));
-        Call<OrderResponce> call = apiService.addOrder(orderResponce, serviceId);
-        call.enqueue(new Callback<OrderResponce>() {
-            @Override
-            public void onResponse(Call<OrderResponce> call, Response<OrderResponce> response) {
-                Utilities.dismissLoadingDialog();
-                if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Order Sent Successfully ... ", Toast.LENGTH_LONG).show();
-                    dismiss();
+        if(orderNotesET.getText().toString().isEmpty()||orderRoomET.getText().toString().isEmpty() ){
+
+            Toast.makeText(getContext(), "Enter Data ... ", Toast.LENGTH_LONG).show();
+        }
+        else {
+            ApiEndpointInterface apiService =
+                    ApiClient.getClient(new AuthInterceptor(MyApplication.getPrefManager(getContext()).getUser().getToken())).create(ApiEndpointInterface.class);
+
+            orderResponce = new OrderResponce(orderNotesET.getText().toString(), Integer.valueOf(orderRoomET.getText().toString()));
+            Call<OrderResponce> call = apiService.addOrder(orderResponce, serviceId);
+            call.enqueue(new Callback<OrderResponce>() {
+                @Override
+                public void onResponse(Call<OrderResponce> call, Response<OrderResponce> response) {
+                    Utilities.dismissLoadingDialog();
+                    if (response.isSuccessful()) {
+                        Toast.makeText(getContext(), "Order Sent Successfully ... ", Toast.LENGTH_LONG).show();
+                        dismiss();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<OrderResponce> call, Throwable t) {
-                Utilities.dismissLoadingDialog();
+                @Override
+                public void onFailure(Call<OrderResponce> call, Throwable t) {
+                    Utilities.dismissLoadingDialog();
 
-            }
-        });
-
+                }
+            });
+        }
     }
 }

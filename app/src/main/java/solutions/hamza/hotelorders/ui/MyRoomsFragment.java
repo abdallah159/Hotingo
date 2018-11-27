@@ -25,11 +25,8 @@ import solutions.hamza.hotelorders.service.ApiEndpointInterface;
 import solutions.hamza.hotelorders.service.AuthInterceptor;
 import solutions.hamza.hotelorders.utils.MyApplication;
 import solutions.hamza.hotelorders.utils.Utilities;
-import timber.log.Timber;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class MyRoomsFragment extends Fragment {
 
     @BindView(R.id.allRoomsRV)
@@ -37,8 +34,6 @@ public class MyRoomsFragment extends Fragment {
 
     private MyRoomsAdapter roomsAdapter;
     ArrayList<AllRoomsResponce> roomResponces;
-
-//    String USER_PREF_ID = MyApplication.getPrefManager(getContext()).getUser().getUser().getUser_id();
 
     UserResponce user = MyApplication.getPrefManager(getContext()).getUser();
 
@@ -74,7 +69,6 @@ public class MyRoomsFragment extends Fragment {
 
                     roomResponces = new ArrayList<>();
                     roomResponces = response.body();
-                    Timber.d(response.body().size()+"");
 
                     roomsAdapter = new MyRoomsAdapter(roomResponces,
                             R.layout.room_row_layout, getContext(), new MyRoomsAdapter.onMyRoomClickListner() {
@@ -99,7 +93,10 @@ public class MyRoomsFragment extends Fragment {
         });
 
         return view;
+
     }
+
+
 
 
     public static Fragment newInstance() {

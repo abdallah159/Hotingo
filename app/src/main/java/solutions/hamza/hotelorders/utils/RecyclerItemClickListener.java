@@ -1,8 +1,5 @@
 package solutions.hamza.hotelorders.utils;
 
-/**
- * Created by karim pc on 1/27/2018.
- */
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

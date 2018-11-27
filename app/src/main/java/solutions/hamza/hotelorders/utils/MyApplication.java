@@ -7,10 +7,6 @@ import android.content.Intent;
 import solutions.hamza.hotelorders.ui.LoginActivity;
 
 
-/**
- * Created by karim on 4/15/18.
- */
-
 public class MyApplication extends Application {
 
     private static MyPreferenceManager pref;

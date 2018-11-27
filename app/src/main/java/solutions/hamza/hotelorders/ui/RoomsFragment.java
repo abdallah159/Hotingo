@@ -25,9 +25,6 @@ import solutions.hamza.hotelorders.service.AuthInterceptor;
 import solutions.hamza.hotelorders.utils.MyApplication;
 import solutions.hamza.hotelorders.utils.Utilities;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class RoomsFragment extends Fragment {
 
 

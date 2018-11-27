@@ -46,7 +46,7 @@ public interface ApiEndpointInterface {
     @PUT("room/{id}/customer-order/{room_id}")
     Call<ExtendResponse> extendRoom(@Body ExtendBook bookRoom, @Path("id") String id, @Path("room_id") String room_id);
 
-    @PUT("room/{id}/admin/room_id/cancle")
+    @PUT("room/{id}/admin/{room_id}/cancle")
     Call<CancelResponce> cancleRoom(@Path("id") String id, @Path("room_id") String room_id);
 
 

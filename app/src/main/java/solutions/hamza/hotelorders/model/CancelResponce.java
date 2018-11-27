@@ -3,7 +3,6 @@ package solutions.hamza.hotelorders.model;
 import java.util.List;
 
 
-@SuppressWarnings("all")
 public class CancelResponce {
     private final String status;
 

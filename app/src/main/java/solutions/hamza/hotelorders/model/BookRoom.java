@@ -2,6 +2,8 @@ package solutions.hamza.hotelorders.model;
 
 public class BookRoom {
 
+
+
     private String phone;
     private String duration;
     private String notes;

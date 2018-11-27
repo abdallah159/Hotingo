@@ -23,11 +23,6 @@ import java.io.IOException;
 import solutions.hamza.hotelorders.R;
 
 
-/**
- * Created by mohamedfakhry on 1/23/18.
- */
-
-
 public class LocalStorageProvider extends DocumentsProvider {
 
 

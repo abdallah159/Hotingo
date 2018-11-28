@@ -64,8 +64,10 @@ public class MainActivity extends AppCompatActivity
         publisherNameTV = linearProfile.findViewById(R.id.publisher_name);
         publisherEmailTV = linearProfile.findViewById(R.id.publisher_mail);
 
-        publisherNameTV.setText(userResponce.getUser().getName());
-        publisherEmailTV.setText(userResponce.getUser().getEmail());
+        if(userResponce.getUser()!=null) {
+            publisherNameTV.setText(userResponce.getUser().getName());
+            publisherEmailTV.setText(userResponce.getUser().getEmail());
+        }
 
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -115,8 +117,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
             myApplication.logout();
-
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
             this.finish();
         }

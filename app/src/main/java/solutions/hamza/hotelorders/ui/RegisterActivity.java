@@ -93,18 +93,19 @@ public class RegisterActivity extends AppCompatActivity {
                     Utilities.dismissLoadingDialog();
                     if (response.isSuccessful()) {
                         MyApplication.getPrefManager(RegisterActivity.this).storeUser(response.body());
-                        finish();
                         startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                        finish();
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "Please Enter Valid Information", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<UserResponce> call, Throwable t) {
                     Utilities.dismissLoadingDialog();
-                    Toast.makeText(RegisterActivity.this, R.string.wrong, Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Please Enter Valid Information", Toast.LENGTH_LONG).show();
                 }
             });
         }
-        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
     }
 }

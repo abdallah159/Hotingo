@@ -1,5 +1,6 @@
 package solutions.hamza.hotelorders.utils;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +17,6 @@ public class MyApplication extends Application {
         super.onCreate();
 
         getPrefManager(getApplicationContext());
-        logout();
     }
 
     public static MyPreferenceManager getPrefManager(Context context) {
@@ -28,9 +28,7 @@ public class MyApplication extends Application {
 
     public void logout() {
         pref.clear();
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(intent);
+
     }
 
 }

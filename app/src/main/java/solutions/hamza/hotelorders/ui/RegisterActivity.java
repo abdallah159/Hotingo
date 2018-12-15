@@ -69,13 +69,15 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailET.setError(getString(R.string.email_not_formatted));
         } else if (!Patterns.PHONE.matcher(phone).matches()) {
-            emailET.setError(getString(R.string.phone_format));
+            phoneET.setError(getString(R.string.phone_format));
         } else if (password.isEmpty()) {
             PasswordET.setError(getString(R.string.enter_password));
         } else if (cPassword.isEmpty()) {
             CpasswordET.setError(getString(R.string.enter_cpassword));
         } else if (password.equals(cPassword) != true) {
             CpasswordET.setError(getString(R.string.confirm_pass_error));
+        } else if (phone.length() < 6) {
+            phoneET.setError(getString(R.string.phone_format));
         } else {
             //
             Utilities.showLoadingDialog(RegisterActivity.this, R.color.colorAccent);
@@ -96,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(RegisterActivity.this, "Please Enter Valid Information", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, "Phone Exist please try again", Toast.LENGTH_LONG).show();
                     }
                 }
 

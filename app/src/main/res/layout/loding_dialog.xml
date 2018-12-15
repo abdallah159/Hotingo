@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
+    android:textDirection="ltr"
     android:background="#fff"
     android:padding="30dp">
 

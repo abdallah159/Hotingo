@@ -57,9 +57,9 @@ public class RoomDetailsFragment extends Fragment {
         ButterKnife.bind(this, view);
 
 
-        roomDetailsNumTV.setText(room.getNumber());
-        roomDetailsDescTV.setText(room.getDesc());
-        roomDetailsPriceTV.setText(room.getPrice() + " for night");
+        roomDetailsNumTV.setText(" Room Number  " +  room.getNumber());
+        roomDetailsDescTV.setText(" Room Descreption " + room.getDesc());
+        roomDetailsPriceTV.setText(room.getPrice() + " KD per night");
 
 
         roomImagesRV.setLayoutManager

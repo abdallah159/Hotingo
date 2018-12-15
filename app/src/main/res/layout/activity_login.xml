@@ -15,6 +15,7 @@
     <LinearLayout
         android:id="@+id/Linearform"
         android:layout_width="match_parent"
+        android:textDirection="anyRtl"
         android:layout_height="200dp"
         android:layout_below="@id/formLogoIV"
         android:layout_marginEnd="20dp"

@@ -4,6 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:textDirection="ltr"
     android:gravity="center">
 
 
@@ -13,6 +14,7 @@
         android:layout_gravity="center"
         android:background="@drawable/textborder"
         android:gravity="center"
+        android:textDirection="ltr"
         android:orientation="vertical">
 
         <LinearLayout
@@ -150,7 +152,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
-                        android:text="LE"
+                        android:text="KD"
                         android:textAlignment="center"
                         android:textColor="@color/colorPrimary"
                         android:textSize="14sp"
